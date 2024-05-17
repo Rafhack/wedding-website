@@ -187,14 +187,14 @@ $(document).ready(function () {
             title: "Casamento da Maria Júlia e Rafael",
 
             // Event start date
-            start: new Date('Set 28, 2024 15:30'),
+            start: new Date('Sep 28, 2024 15:30'),
 
             // Event duration (IN MINUTES)
             // duration: 120,
 
             // You can also choose to set an end time
             // If an end time is set, this will take precedence over duration
-            end: new Date('Set 28, 2024 22:00'),
+            end: new Date('Sep 28, 2024 22:00'),
 
             // Event Address
             address: 'R. Prof. Licínio Carpineli, 442 - Alpes D Ouro, Bom Jesus dos Perdões - SP, 12955-000',
@@ -213,7 +213,6 @@ $(document).ready(function () {
         var data = $(this).serialize();
 
         $('#alert-wrapper').html(alert_markup('info', '<strong>Só um segundo...!</strong> Estamos salvando seus dados.'));
-
         $.post('https://script.google.com/macros/s/AKfycbyvu47H5joMxssnSYQRMT1_OaoKocd_lznyoo8hncK7n8TdWiDdRSxItbSeK5lKNYCK/exec', data)
                 .done(function (data) {
                     console.log(data);
@@ -236,7 +235,7 @@ $(document).ready(function () {
 
 // Google map
 function initMap() {
-    var location = {lat: -23.1662977, lng: -46.4517975};
+    var location = {lat: -23.168930290802937, lng: -46.453797578572754};
     var map = new google.maps.Map(document.getElementById('map-canvas'), {
         zoom: 15,
         center: location,
