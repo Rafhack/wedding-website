@@ -213,7 +213,7 @@ $(document).ready(function () {
         var data = $(this).serialize();
 
         $('#alert-wrapper').html(alert_markup('info', '<strong>Só um segundo...!</strong> Estamos salvando seus dados.'));
-        $.post('https://script.google.com/macros/s/AKfycbwD2yX9ffMM9M7ApNg3dihpAMu4zvKetgvXROCerrL3LK3EmuH8KdSGKfsi_phZ1Pk7/exec', data)
+        $.post('https://script.google.com/macros/s/AKfycbyXTaD--Cb50hPihXMNvDNahLGoibBfKPaTWDTOicBTuZg0HUmjKWr3QByAbIPyLBM/exec', data)
                 .done(function (data) {
                     console.log(data);
                     if (data.result === "error") {
