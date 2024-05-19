@@ -211,11 +211,9 @@ $(document).ready(function () {
     $('#rsvp-form').on('submit', function (e) {
         e.preventDefault();
         var data = $(this).serialize();
-
         $('#alert-wrapper').html(alert_markup('info', '<strong>Só um segundo...!</strong> Estamos salvando seus dados.'));
-        $.post('https://script.google.com/macros/s/AKfycbyXTaD--Cb50hPihXMNvDNahLGoibBfKPaTWDTOicBTuZg0HUmjKWr3QByAbIPyLBM/exec', data)
+        $.post('https://script.google.com/macros/s/AKfycbzLAh3ViyNOcR40gmPz_QYaMJ-460rbehIuYisTrwCIj2nZloTxSbQGu4Fi-WJ1Q6VK/exec', data)
                 .done(function (data) {
-                    console.log(data);
                     if (data.result === "error") {
                         $('#alert-wrapper').html(alert_markup('danger', data.message));
                     } else {
