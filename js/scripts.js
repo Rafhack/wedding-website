@@ -1,4 +1,34 @@
+var googleScript = 'https://script.google.com/macros/s/AKfycbzLAh3ViyNOcR40gmPz_QYaMJ-460rbehIuYisTrwCIj2nZloTxSbQGu4Fi-WJ1Q6VK/exec'
+
 $(document).ready(function () {
+
+    /***************** Presents ******************/
+    $.get(googleScript)
+        .done(function (data) {
+            var cardHtml = ""
+            data.forEach(function (p) {
+                cardHtml +=
+                    '<div class="card" style="width: 18rem;">' +
+                    '   <img src="' + p.image + '" class="card-img-top" alt="' + p.name + '">' +
+                    '   <div class="card-body">' +
+                    '       <h5 class="card-title">' + p.name + '</h5>' +
+                    '   </div>' +
+                    '</div>'
+            });
+            $('.card-horizontal').html(cardHtml);
+        })
+        .fail(function (data) {
+            console.log(data);
+            $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Houve um erro com o servidor'));
+        });
+    // var presents = [
+    //     {
+    //         "id": "64d82523-b6bb-46b0-9cc1-5f26cd30d2fa",
+    //         "name": "Panela",
+    //         "image": "https://m.media-amazon.com/images/I/81VfXzeQUgL._AC_UF894,1000_QL80_.jpg",
+    //         "given": false
+    //     }
+    // ]
 
     /***************** Waypoints ******************/
 
@@ -212,19 +242,19 @@ $(document).ready(function () {
         e.preventDefault();
         var data = $(this).serialize();
         $('#alert-wrapper').html(alert_markup('info', '<strong>Só um segundo...!</strong> Estamos salvando seus dados.'));
-        $.post('https://script.google.com/macros/s/AKfycbzLAh3ViyNOcR40gmPz_QYaMJ-460rbehIuYisTrwCIj2nZloTxSbQGu4Fi-WJ1Q6VK/exec', data)
-                .done(function (data) {
-                    if (data.result === "error") {
-                        $('#alert-wrapper').html(alert_markup('danger', data.message));
-                    } else {
-                        $('#alert-wrapper').html('');
-                        $('#rsvp-modal').modal('show');
-                    }
-                })
-                .fail(function (data) {
-                    console.log(data);
-                    $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Houve um erro com o servidor'));
-                });
+        $.post(googleScript, data)
+            .done(function (data) {
+                if (data.result === "error") {
+                    $('#alert-wrapper').html(alert_markup('danger', data.message));
+                } else {
+                    $('#alert-wrapper').html('');
+                    $('#rsvp-modal').modal('show');
+                }
+            })
+            .fail(function (data) {
+                console.log(data);
+                $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Houve um erro com o servidor'));
+            });
     });
 
 });
@@ -233,7 +263,7 @@ $(document).ready(function () {
 
 // Google map
 function initMap() {
-    var location = {lat: -23.168930290802937, lng: -46.453797578572754};
+    var location = { lat: -23.168930290802937, lng: -46.453797578572754 };
     var map = new google.maps.Map(document.getElementById('map-canvas'), {
         zoom: 15,
         center: location,
@@ -247,7 +277,7 @@ function initMap() {
 }
 
 function initBBSRMap() {
-    var la_fiesta = {lat: 20.305826, lng: 85.85480189999998};
+    var la_fiesta = { lat: 20.305826, lng: 85.85480189999998 };
     var map = new google.maps.Map(document.getElementById('map-canvas'), {
         zoom: 15,
         center: la_fiesta,
