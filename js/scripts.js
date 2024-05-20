@@ -275,7 +275,7 @@ function renderCards(data) {
         }
         $('#present-cost').html(brReal.format(present.cost));
         $('#qrcode').html('');
-        $('#qrcode').qrcode(present.qrcode);
+        $('#qrcode').qrcode({ width: 200, height: 200, text: present.qrcode });
         $('#pix-code').val(present.qrcode);
         $('#presents-modal').modal('show');
         $('#btn-copy').click(function () {
