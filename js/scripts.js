@@ -1,35 +1,33 @@
-var googleScript = 'https://script.google.com/macros/s/AKfycbzLAh3ViyNOcR40gmPz_QYaMJ-460rbehIuYisTrwCIj2nZloTxSbQGu4Fi-WJ1Q6VK/exec'
+var googleScript = 'https://script.google.com/macros/s/AKfycbyW12e0Jz9lygdEQRw5HrpAVjFFRbwLZlvmUoqkaPCjHzBNgiIy2hthTMJx0p4HCxmC/exec'
 
 $(document).ready(function () {
 
     /***************** Presents ******************/
-    $.get(googleScript)
-        .done(function (data) {
-            var cardHtml = ""
-            data.forEach(function (p) {
-                cardHtml +=
-                    '<div class="card" style="width: 18rem;">' +
-                    '   <img src="' + p.image + '" class="card-img-top" alt="' + p.name + '">' +
-                    '   <div class="card-body">' +
-                    '       <h5 class="card-title">' + p.name + '</h5>' +
-                    '   </div>' +
-                    '</div>'
-            });
-            $('.card-horizontal').html(cardHtml);
-        })
-        .fail(function (data) {
-            console.log(data);
-            $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Houve um erro com o servidor'));
+    $.get(googleScript).done(function (data) {
+        var cardHtml = ""
+        data.forEach(function (p) {
+            cardHtml +=
+                '<div class="card" id="' + p.id + '" style="width: 18rem;">' +
+                '   <img src="' + p.image + '" class="card-img-top" alt="' + p.name + '">' +
+                '   <div class="card-body">' +
+                '       <h5 class="card-title">' + p.name + '</h5>' +
+                '   </div>' +
+                '</div>'
         });
-    // var presents = [
-    //     {
-    //         "id": "64d82523-b6bb-46b0-9cc1-5f26cd30d2fa",
-    //         "name": "Panela",
-    //         "image": "https://m.media-amazon.com/images/I/81VfXzeQUgL._AC_UF894,1000_QL80_.jpg",
-    //         "given": false
-    //     }
-    // ]
+        $('.card-horizontal').html(cardHtml);
 
+        $('.card').click(function () {
+            var clickedId = $(this).attr('id');
+            var present = data.find(function (p) {
+                return p.id === clickedId
+            });
+            $('#qrcode').html('');
+            $('#qrcode').qrcode(present.qrcode);
+            $('#presents-modal').modal('show');
+        });
+    }).fail(function (data) {
+        console.log(data);
+    });
     /***************** Waypoints ******************/
 
     $('.wp1').waypoint(function () {
