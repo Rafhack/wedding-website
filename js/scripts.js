@@ -1,30 +1,10 @@
-var googleScript = 'https://script.google.com/macros/s/AKfycbyW12e0Jz9lygdEQRw5HrpAVjFFRbwLZlvmUoqkaPCjHzBNgiIy2hthTMJx0p4HCxmC/exec'
+var googleScript = 'https://script.google.com/macros/s/AKfycbwEzNixLqLoTnywarlbaPY-Xkydtf6EvZ5AuERsM_E4mqQmNdlX7MfCNAlbIuoQmTB6/exec'
 
 $(document).ready(function () {
 
     /***************** Presents ******************/
     $.get(googleScript).done(function (data) {
-        var cardHtml = ""
-        data.forEach(function (p) {
-            cardHtml +=
-                '<div class="card" id="' + p.id + '" style="width: 18rem;">' +
-                '   <img src="' + p.image + '" class="card-img-top" alt="' + p.name + '">' +
-                '   <div class="card-body">' +
-                '       <h5 class="card-title">' + p.name + '</h5>' +
-                '   </div>' +
-                '</div>'
-        });
-        $('.card-horizontal').html(cardHtml);
-
-        $('.card').click(function () {
-            var clickedId = $(this).attr('id');
-            var present = data.find(function (p) {
-                return p.id === clickedId
-            });
-            $('#qrcode').html('');
-            $('#qrcode').qrcode(present.qrcode);
-            $('#presents-modal').modal('show');
-        });
+        renderCards(data);
     }).fail(function (data) {
         console.log(data);
     });
@@ -258,6 +238,76 @@ $(document).ready(function () {
 });
 
 /********************** Extras **********************/
+function renderCards(data) {
+    var cardHtml = ""
+    var brReal = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+    data.forEach(function (p) {
+        cardHtml +=
+            '<div class="card" id="' + p.id + '" style="width: 18rem;">' +
+            '   <div style="display: flex; flex-direction: column; align-items: center; position: relative">' +
+            '       <img src="' + p.image + '" class="card-img-top" alt="' + p.name + '">' +
+            '       <div class="card-body">' +
+            '           <h5 class="card-title">' + p.name + '</h5>' +
+            '           <p class="currency">' + brReal.format(p.cost) + '</p>' +
+            '       </div>'
+        if (p.given) {
+            cardHtml +=
+                '   <div id="given-cover">' +
+                '       <span class="material-symbols-outlined">' +
+                '           check' +
+                '       </span>' +
+                '   </div>'
+        }
+        cardHtml +=
+            '   </div>' +
+            '</div>'
+    });
+    $('.card-horizontal').html(cardHtml);
+
+    $('.card').click(function () {
+        var clickedId = $(this).attr('id');
+        var present = data.find(function (p) {
+            return p.id === clickedId
+        });
+
+        if (present.given) {
+            return
+        }
+        $('#present-cost').html(brReal.format(present.cost));
+        $('#qrcode').html('');
+        $('#qrcode').qrcode(present.qrcode);
+        $('#pix-code').val(present.qrcode);
+        $('#presents-modal').modal('show');
+        $('#btn-copy').click(function () {
+            navigator.clipboard.writeText(present.qrcode);
+        })
+        $('#id').val(present.id);
+        $('#present-form').on('submit', function (e) {
+            e.preventDefault();
+            var request = $(this).serialize();
+            $('#present-alert-wrapper').html(alert_markup('info', '<strong>Só um segundo...!</strong> Estamos salvando seus dados.'));
+            $.post(googleScript, request)
+                .done(function (response) {
+                    if (data.result === "error") {
+                        $('#present-alert-wrapper').html(alert_markup('danger', data.message));
+                    } else {
+                        $('#present-alert-wrapper').html('');
+                    }
+                    var index = data.findIndex(function (p) {
+                        return p.id === clickedId
+                    });
+                    present.given = true;
+                    data[index] = present;
+                    $('#presents-modal').modal('hide');
+                    renderCards(data);
+                })
+                .fail(function (data) {
+                    console.log(data);
+                    $('#present-alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Houve um erro com o servidor'));
+                });
+        });
+    });
+}
 
 // Google map
 function initMap() {
