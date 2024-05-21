@@ -592,6 +592,7 @@ Intro
 .card-container {
   display: flex;
   align-items: center;
+  margin-bottom: 120px;
 }
 
 .card-body {
@@ -847,6 +848,8 @@ Features-stack
 .events
 ========================================================================== */
 .events {
+
+  margin-top: 50px;
   .leftcol {
     padding-right: 100px;
     border-right: solid 1px $keyline-color;
@@ -1073,6 +1076,10 @@ Embed video
 /* ==========================================================================
 Google map
 ========================================================================== */
+#map {
+  margin-top: 120px;
+}
+
 #map-canvas {
   height: 500px;
   width: 100%;
