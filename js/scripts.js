@@ -243,7 +243,7 @@ function renderCards(data) {
     var brReal = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
     data.forEach(function (p) {
         cardHtml +=
-            '<div class="card" id="' + p.id + '" style="width: 18rem;">' +
+            '<div class="card" id="' + p.id + '" style="width: 18rem;" ' + (p.given ? 'disabled' : '') + '>' +
             '   <div style="display: flex; flex-direction: column; align-items: center; position: relative">' +
             '       <img src="' + p.image + '" class="card-img-top" alt="' + p.name + '">' +
             '       <div class="card-body">' +
