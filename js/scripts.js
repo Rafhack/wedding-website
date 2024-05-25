@@ -253,9 +253,7 @@ function renderCards(data) {
         if (p.given) {
             cardHtml +=
                 '   <div id="given-cover">' +
-                '       <span class="material-symbols-outlined">' +
-                '           check' +
-                '       </span>' +
+                '       <img src="img/ic_done.svg">' +
                 '   </div>'
         }
         cardHtml +=
