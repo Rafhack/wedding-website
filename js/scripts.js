@@ -1,4 +1,4 @@
-var googleScript = 'https://script.google.com/macros/s/AKfycbwEzNixLqLoTnywarlbaPY-Xkydtf6EvZ5AuERsM_E4mqQmNdlX7MfCNAlbIuoQmTB6/exec'
+var googleScript = 'https://script.google.com/macros/s/AKfycbyKL9BaY-umAjOzD1e6Aa3q3AptDXh3EYedx56toRXSaFyI7f7-xTZdXnhVTh4QOgEM/exec'
 
 $(document).ready(function () {
 
