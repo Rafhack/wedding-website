@@ -1,4 +1,5 @@
 var googleScript = 'https://script.google.com/macros/s/AKfycbz08mkzODRescKb572FxHLgtMtAl9MnE8pxSsdwXZpLrBVAFLxm6I5lAZsSwUmBw60S/exec'
+var openModal = ''
 
 $(document).ready(function () {
 
@@ -7,6 +8,10 @@ $(document).ready(function () {
         renderCards(data);
     }).fail(function (data) {
         console.log(data);
+    });
+
+    $(window).on('popstate', function(event) {
+        $(openModal).modal('hide');
     });
     /***************** Waypoints ******************/
 
@@ -227,6 +232,7 @@ $(document).ready(function () {
                 } else {
                     $('#alert-wrapper').html('');
                     $('#rsvp-modal').modal('show');
+                    openModal = '#rsvp-modal';
                 }
             })
             .fail(function (data) {
@@ -271,11 +277,22 @@ function renderCards(data) {
         if (present.given) {
             return
         }
+        if (!present.qrcode) {
+            $('#pix-container').hide();
+            $('#present-text').hide();
+            $('.present-btn').html('Confirmar!')
+        } else {
+            $('#pix-container').show();
+            $('#present-text').show();
+            $('.present-btn').html('Pagamento feito!')
+        }
+
         $('#present-cost').html(brReal.format(present.cost));
         $('#qrcode').html('');
         $('#qrcode').qrcode({ width: 200, height: 200, text: present.qrcode });
         $('#pix-code').val(present.qrcode);
         $('#presents-modal').modal('show');
+        openModal = '#presents-modal';
         $('#btn-copy').click(function () {
             navigator.clipboard.writeText(present.qrcode);
         })
