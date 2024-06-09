@@ -1,6 +1,16 @@
 var googleScript = 'https://script.google.com/macros/s/AKfycbz08mkzODRescKb572FxHLgtMtAl9MnE8pxSsdwXZpLrBVAFLxm6I5lAZsSwUmBw60S/exec'
 var openModal = ''
 
+if (window.history && window.history.pushState) {
+    $('#presents-modal').on('show.bs.modal', function (e) {
+        window.history.pushState('forward', null, './#modal');
+    });
+
+    $(window).on('popstate', function () {
+        $('#presents-modal').modal('hide');
+    });
+}
+
 $(document).ready(function () {
 
     /***************** Presents ******************/
@@ -8,10 +18,6 @@ $(document).ready(function () {
         renderCards(data);
     }).fail(function (data) {
         console.log(data);
-    });
-
-    $(window).on('popstate', function(event) {
-        $(openModal).modal('hide');
     });
     /***************** Waypoints ******************/
 
