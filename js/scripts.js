@@ -1,13 +1,17 @@
 var googleScript = 'https://script.google.com/macros/s/AKfycbz08mkzODRescKb572FxHLgtMtAl9MnE8pxSsdwXZpLrBVAFLxm6I5lAZsSwUmBw60S/exec'
-var openModal = ''
 
-if (window.history && window.history.pushState) {
+if (window.history && window.history.pushState && location.protocol != 'file:') {
     $('#presents-modal').on('show.bs.modal', function (e) {
+        window.history.pushState('forward', null, './#modal');
+    });
+
+    $('#rsvp-modal').on('show.bs.modal', function (e) {
         window.history.pushState('forward', null, './#modal');
     });
 
     $(window).on('popstate', function () {
         $('#presents-modal').modal('hide');
+        $('#rsvp-modal').modal('hide');
     });
 }
 
@@ -238,7 +242,6 @@ $(document).ready(function () {
                 } else {
                     $('#alert-wrapper').html('');
                     $('#rsvp-modal').modal('show');
-                    openModal = '#rsvp-modal';
                 }
             })
             .fail(function (data) {
@@ -253,6 +256,9 @@ $(document).ready(function () {
 function renderCards(data) {
     var cardHtml = ""
     var brReal = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+    data.sort(function (x, y) {
+        return x.cost - y.cost;
+    })
     data.forEach(function (p) {
         cardHtml +=
             '<div class="card" id="' + p.id + '" style="width: 18rem;" ' + (p.given ? 'disabled' : '') + '>' +
@@ -298,7 +304,6 @@ function renderCards(data) {
         $('#qrcode').qrcode({ width: 200, height: 200, text: present.qrcode });
         $('#pix-code').val(present.qrcode);
         $('#presents-modal').modal('show');
-        openModal = '#presents-modal';
         $('#btn-copy').click(function () {
             navigator.clipboard.writeText(present.qrcode);
         })

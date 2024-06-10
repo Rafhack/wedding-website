@@ -492,10 +492,6 @@ Intro
   }
 }
 
-#intro p {
-  text-align: center;
-}
-
 #presents p {
   text-align: center;
 }
@@ -541,8 +537,8 @@ Intro
 }
 
 .card-horizontal {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: auto auto auto;
   overflow-x: auto;
   margin: 0 auto;
   padding: 15px 15px;
