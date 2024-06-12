@@ -394,7 +394,7 @@ header {
   }
 
   .logo img {
-    height: 19px;
+    height: 30px;
   }
 
   ul.primary-nav {
@@ -492,6 +492,10 @@ Intro
   }
 }
 
+#intro p {
+  text-align: center;
+}
+
 #presents p {
   text-align: center;
 }
@@ -537,7 +541,7 @@ Intro
 }
 
 .card-horizontal {
-  display: grid;
+  display: flex;
   grid-template-columns: auto auto auto;
   overflow-x: auto;
   margin: 0 auto;
@@ -577,7 +581,7 @@ Intro
 .card-container {
   display: flex;
   align-items: center;
-  margin-bottom: 120px;
+  margin-bottom: 80px;
 }
 
 .card-body {
@@ -1062,7 +1066,7 @@ Embed video
 Google map
 ========================================================================== */
 #map {
-  margin-top: 120px;
+  margin-top: 80px;
 }
 
 #map-canvas {
