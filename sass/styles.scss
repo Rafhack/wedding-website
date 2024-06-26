@@ -318,7 +318,6 @@ Navigation
 Hero
 ========================================================================== */
 .hero {
-  min-height: 750px;
   background-color: $accent-color;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -353,7 +352,7 @@ Hero
 
   .hero-content img {
     width: 55%;
-    margin-bottom: 25%;
+    margin-bottom: 10%;
   }
 }
 
