@@ -348,12 +348,12 @@ Hero
   }
 
   .hero-content {
-    padding-top: 40%;
+    padding-top: 20%;
   }
 
   .hero-content img {
     width: 55%;
-    margin-bottom: 12%;
+    margin-bottom: 25%;
   }
 }
 
@@ -366,7 +366,7 @@ Hero
 
 .fixed {
   position: fixed;
-  background-color: $accent-color;
+  background-color: rgba(100, 116, 90, .95);
   z-index: 999;
   width: 100%;
 }
