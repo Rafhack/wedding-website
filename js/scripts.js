@@ -122,7 +122,7 @@ $(document).ready(function () {
                     "top": "26px",
                 });
                 $('header .navicon').css({
-                    "top": "34px",
+                    "top": "50%",
                 });
             } else {
                 $('section.navigation').removeClass('fixed');
@@ -134,7 +134,7 @@ $(document).ready(function () {
                     "top": "41px",
                 });
                 $('header .navicon').css({
-                    "top": "48px",
+                    "top": "50%",
                 });
             }
         });
