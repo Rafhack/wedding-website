@@ -1,4 +1,4 @@
-var googleScript = 'https://script.google.com/macros/s/AKfycbwDpxxXZKowZDzd-qZfo2pX8baN3lxD_Swiw19Ex3DVCPl0wkevEToNcAKcIrkYqmdp/exec'
+var googleScript = 'https://script.google.com/macros/s/AKfycbyzNSHaqgTrV00Qp0K_pHhoUW4ylFmI36Eamjyjb2_w0Is7dYK1ABnkCpFRJKvFgfc/exec'
 
 if (window.history && window.history.pushState && location.protocol != 'file:') {
     $('#presents-modal').on('show.bs.modal', function (e) {
