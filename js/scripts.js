@@ -354,6 +354,10 @@ function renderCards() {
         $('#presents-modal').modal('show');
         $('#btn-copy').click(function () {
             navigator.clipboard.writeText(present.qrcode);
+            $('#present-alert-wrapper').html(alert_markup('info', 'Código copiado!'));
+            setTimeout(function(){
+                $('#present-alert-wrapper').html('');
+            }, 2000);
         })
         $('#id').val(present.id);
         $('#present-form').on('submit', function (e) {
