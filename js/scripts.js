@@ -1,4 +1,6 @@
 var googleScript = 'https://script.google.com/macros/s/AKfycbyzNSHaqgTrV00Qp0K_pHhoUW4ylFmI36Eamjyjb2_w0Is7dYK1ABnkCpFRJKvFgfc/exec'
+var cardsData = null
+var chunkSize = 6;
 
 if (window.history && window.history.pushState && location.protocol != 'file:') {
     $('#presents-modal').on('show.bs.modal', function (e) {
@@ -15,11 +17,34 @@ if (window.history && window.history.pushState && location.protocol != 'file:') 
     });
 }
 
+var calculateChunkSize = function() {
+    var size = Math.round($(window).width() / 175) - 1;
+    size = size >= 2 ? size : 2;
+    size = size <= 10 ? size : 10;
+    if (size != chunkSize) {
+        chunkSize = size
+        renderCards()
+    }
+}
+
+var windowsSize=function(){
+    if (!cardsData) {
+        return;
+    }
+    calculateChunkSize()
+};
+
+$(window).resize(windowsSize);
+
+
 $(document).ready(function () {
+
+    windowsSize();
 
     /***************** Presents ******************/
     $.get(googleScript).done(function (data) {
-        renderCards(data);
+        cardsData = data
+        calculateChunkSize();
     }).fail(function (data) {
         console.log(data);
     });
@@ -253,36 +278,59 @@ $(document).ready(function () {
 });
 
 /********************** Extras **********************/
-function renderCards(data) {
-    var cardHtml = ""
+function renderCards() {
     var brReal = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-    data.sort(function (x, y) {
+
+    cardsData.sort(function (x, y) {
         return x.cost - y.cost;
-    })
-    data.forEach(function (p) {
-        cardHtml +=
-            '<div class="card" id="' + p.id + '" style="width: 18rem;" ' + (p.given ? 'disabled' : '') + '>' +
-            '   <div style="display: flex; flex-direction: column; align-items: center; position: relative">' +
-            '       <img src="' + p.image + '" class="card-img-top" alt="' + p.name + '">' +
-            '       <div class="card-body">' +
-            '           <h5 class="card-title">' + p.name + '</h5>' +
-            '           <p class="currency">' + brReal.format(p.cost) + '</p>' +
-            '       </div>'
-        if (p.given) {
+    });
+    
+    var dataCopy = cardsData.map(function (i) {
+        return i
+    });
+
+    var cardHtml = ""
+    var chunks = []
+
+    for (var i = 0; i < dataCopy.length; i += chunkSize) {
+        chunks.push(dataCopy.slice(i, i + chunkSize));
+    }
+
+    
+    jQuery.each(chunks, function(i, item) {
+        cardHtml += 
+            '<div style="width: 100%" overflow="hidden" class="card-item row item' + (i == 0 ? ' active' : '') + '" >' +
+            '   <div class="card-chunk-wrapper">'
+        chunks[i].forEach(function (p) {
             cardHtml +=
-                '   <div id="given-cover">' +
-                '       <img src="img/ic_done.svg">' +
-                '   </div>'
-        }
+                '<div class="card" id="' + p.id + '" style="width: 175px;" ' + (p.given ? 'disabled' : '') + '>' +
+                '   <div style="display: flex; flex-direction: column; align-items: center; position: relative">' +
+                '       <img src="' + p.image + '" class="card-img-top" alt="' + p.name + '">' +
+                '       <div class="card-body">' +
+                '           <h5 class="card-title">' + p.name + '</h5>' +
+                '           <p class="currency">' + brReal.format(p.cost) + '</p>' +
+                '       </div>'
+            if (p.given) {
+                cardHtml +=
+                    '   <div id="given-cover">' +
+                    '       <img src="img/ic_done.svg">' +
+                    '   </div>'
+            }
+            cardHtml +=
+                '   </div>' +
+                '</div>'
+        });
         cardHtml +=
             '   </div>' +
             '</div>'
     });
+
+
     $('.card-horizontal').html(cardHtml);
 
     $('.card').click(function () {
         var clickedId = $(this).attr('id');
-        var present = data.find(function (p) {
+        var present = cardsData.find(function (p) {
             return p.id === clickedId
         });
 
@@ -314,18 +362,18 @@ function renderCards(data) {
             $('#present-alert-wrapper').html(alert_markup('info', '<strong>Só um segundo...!</strong> Estamos salvando seus dados.'));
             $.post(googleScript, request)
                 .done(function (response) {
-                    if (data.result === "error") {
+                    if (response.result === "error") {
                         $('#present-alert-wrapper').html(alert_markup('danger', data.message));
                     } else {
                         $('#present-alert-wrapper').html('');
                     }
-                    var index = data.findIndex(function (p) {
+                    var index = cardsData.findIndex(function (p) {
                         return p.id === clickedId
                     });
                     present.given = true;
-                    data[index] = present;
+                    cardsData[index] = present;
                     $('#presents-modal').modal('hide');
-                    renderCards(data);
+                    renderCards();
                 })
                 .fail(function (data) {
                     console.log(data);

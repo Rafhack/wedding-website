@@ -364,3 +364,13 @@
         padding-top: 20px;
     }
 }
+
+@media screen and (min-width: 320px) {
+    .glyphicon-chevron-right {
+        margin-top: -10px;
+    }
+
+    .glyphicon-chevron-left {
+        margin-top: -10px;
+    }
+}
