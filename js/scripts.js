@@ -1,6 +1,7 @@
 var googleScript = 'https://script.google.com/macros/s/AKfycbyzNSHaqgTrV00Qp0K_pHhoUW4ylFmI36Eamjyjb2_w0Is7dYK1ABnkCpFRJKvFgfc/exec'
 var cardsData = null
 var chunkSize = 6;
+var currentSlide = 0;
 
 if (window.history && window.history.pushState && location.protocol != 'file:') {
     $('#presents-modal').on('show.bs.modal', function (e) {
@@ -36,6 +37,9 @@ var windowsSize=function(){
 
 $(window).resize(windowsSize);
 
+$('#presentsCarousel').on('slid.bs.carousel', function () {
+    currentSlide = $('div.active').index();
+});
 
 $(document).ready(function () {
 
@@ -44,6 +48,10 @@ $(document).ready(function () {
     /***************** Presents ******************/
     $.get(googleScript).done(function (data) {
         cardsData = data
+        cardsData = cardsData
+            .map(function (value) { return { value: value, sort: Math.random() } })
+            .sort(function (x, y) { return x.sort - y.sort })
+            .map(function (value) { return value.value })
         calculateChunkSize();
     }).fail(function (data) {
         console.log(data);
@@ -280,10 +288,6 @@ $(document).ready(function () {
 /********************** Extras **********************/
 function renderCards() {
     var brReal = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    cardsData.sort(function (x, y) {
-        return x.cost - y.cost;
-    });
     
     var dataCopy = cardsData.map(function (i) {
         return i
@@ -327,6 +331,7 @@ function renderCards() {
 
 
     $('.card-horizontal').html(cardHtml);
+    $('#presentsCarousel').carousel(currentSlide);
 
     $('.card').click(function () {
         var clickedId = $(this).attr('id');
