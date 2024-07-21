@@ -52,6 +52,8 @@ $(document).ready(function () {
             .map(function (value) { return { value: value, sort: Math.random() } })
             .sort(function (x, y) { return x.sort - y.sort })
             .map(function (value) { return value.value })
+        $('#presentsLoading').hide();
+        $('.card-container').show();
         calculateChunkSize();
     }).fail(function (data) {
         console.log(data);
