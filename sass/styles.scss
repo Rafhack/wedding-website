@@ -1186,6 +1186,11 @@ RSVP form
       font-size: 13px;
     }
 
+    #rsvpLoading {
+      padding: 15px 0;
+      display: none;
+    }
+
     .form-input-group {
       width: 100%;
       height: 55px;

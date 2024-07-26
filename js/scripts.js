@@ -270,11 +270,16 @@ $(document).ready(function () {
         e.preventDefault();
         var data = $(this).serialize();
         $('#alert-wrapper').html(alert_markup('info', '<strong>Só um segundo...!</strong> Estamos salvando seus dados.'));
+        $('#rsvpLoading').show();
+        $('.rsvp-btn').hide();
         $.post(googleScript, data)
             .done(function (data) {
+                $('#rsvpLoading').hide();
+                $('.rsvp-btn').show();
                 if (data.result === "error") {
                     $('#alert-wrapper').html(alert_markup('danger', data.message));
                 } else {
+                    $('#rsvp-form')[0].reset();
                     $('#alert-wrapper').html('');
                     $('#rsvp-modal').modal('show');
                 }
@@ -282,6 +287,8 @@ $(document).ready(function () {
             .fail(function (data) {
                 console.log(data);
                 $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Houve um erro com o servidor'));
+                $('#rsvpLoading').hide();
+                $('.rsvp-btn').show();
             });
     });
 
